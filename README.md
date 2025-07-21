@@ -183,15 +183,3 @@ Tests implementados:
 3. **Streaming en vivo**: Integración con Twitch para torneos
 4. **Chat en tiempo real**: WebSocket para comunicación
 5. **Marketplace**: Compra/venta de power-ups entre jugadores
-
-## 🤝 Contribuir
-
-1. Haz un fork del proyecto
-2. Crea una rama para tu funcionalidad (`git checkout -b feature/amazing-feature`)
-3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
-4. Push a la rama (`git push origin feature/amazing-feature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo LICENSE para más detalles.
