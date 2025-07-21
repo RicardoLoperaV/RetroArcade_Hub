@@ -1,52 +1,117 @@
-# RetroArcade_Hub
+# RetroArcade Hub API
 
-💻 INSTALACIÓN Y EJECUCIÓN:
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green.svg)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0.23-orange.svg)
+![Status](https://img.shields.io/badge/Status-Development-yellow.svg)
 
-1. Instalar dependencias:
+API gamificada para torneos de videojuegos retro con sistema de power-ups y perfiles de jugadores.
+
+## 📋 Requisitos
+
+- Python 3.8+
+- Dependencias:
+  - fastapi
+  - uvicorn
+  - sqlalchemy
+  - pytest
+  - python-multipart
+
+## 💻 Instalación
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/yourusername/RetroArcade_Hub.git
+   cd RetroArcade_Hub
+   ```
+
+2. Crear entorno virtual (opcional pero recomendado):
+   ```bash
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # Linux/Mac
+   source venv/bin/activate
+   ```
+
+3. Instalar dependencias:
+   ```bash
    pip install fastapi uvicorn sqlalchemy pytest python-multipart
+   ```
 
-2. Ejecutar API:
-   python main.py
+## 🚀 Ejecución
 
-3. Ejecutar tests:
-   pytest test_retroarcade.py -v
+Para iniciar el servidor:
 
-4. Ver documentación:
-   http://localhost:8000/docs
+```bash
+python RetroArcade_Hub.py
+```
 
-🎯 EJEMPLOS DE USO:
+O alternativamente:
 
-1. Crear jugador:
-   POST /api/v1/players
-   {
-     "username": "retromaster2025",
-     "email": "master@retroarcade.com",
-     "avatar_url": "https://retro.com/avatars/master.png"
-   }
+```bash
+uvicorn RetroArcade_Hub:app --reload
+```
 
-2. Listar torneos activos:
-   GET /api/v1/tournaments?status=active
+La API estará disponible en: http://localhost:8000
 
-3. Filtrar torneos por juego:
-   GET /api/v1/tournaments?game_title=Pac-Man
+Documentación Swagger UI: http://localhost:8000/docs
 
-4. Aplicar power-up (requiere autenticación):
-   POST /api/v1/players/1/apply-power-up
-   Headers: Authorization: Bearer your-jwt-token
-   {
-     "tournament_id": 1,
-     "power_up_id": 1
-   }
+## 🎮 Ejemplos de uso
 
-5. Ver inventario de jugador:
-   GET /api/v1/players/1/inventory
+### 1. Crear jugador
 
-6. Listar power-ups disponibles:
-   GET /api/v1/power-ups
+```bash
+curl -X POST "http://localhost:8000/api/v1/players" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "retromaster2025",
+    "email": "master@retroarcade.com",
+    "avatar_url": "https://retro.com/avatars/master.png"
+  }'
+```
 
-📊 RESPUESTAS DE EJEMPLO:
+### 2. Listar torneos activos
 
-Jugador creado:
+```bash
+curl "http://localhost:8000/api/v1/tournaments?status=active"
+```
+
+### 3. Filtrar torneos por juego
+
+```bash
+curl "http://localhost:8000/api/v1/tournaments?game_title=Pac-Man"
+```
+
+### 4. Aplicar power-up (requiere autenticación)
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/players/1/apply-power-up" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-jwt-token" \
+  -d '{
+    "tournament_id": 1,
+    "power_up_id": 1
+  }'
+```
+
+### 5. Ver inventario de jugador
+
+```bash
+curl "http://localhost:8000/api/v1/players/1/inventory" \
+  -H "Authorization: Bearer your-jwt-token"
+```
+
+### 6. Listar power-ups disponibles
+
+```bash
+curl "http://localhost:8000/api/v1/power-ups"
+```
+
+## 📊 Respuestas de ejemplo
+
+### Jugador creado:
+```json
 {
   "id": 1,
   "username": "retromaster2025",
@@ -58,8 +123,10 @@ Jugador creado:
   "created_at": "2025-07-21T10:30:00",
   "is_active": true
 }
+```
 
-Torneo disponible:
+### Torneo disponible:
+```json
 {
   "id": 1,
   "name": "Pac-Man Championship 2025",
@@ -73,154 +140,82 @@ Torneo disponible:
   "end_date": "2025-07-24T18:00:00",
   "status": "upcoming"
 }
+```
 
-Power-up aplicado:
+### Power-up aplicado:
+```json
 {
   "message": "Power-up 'Speed Boost' applied successfully",
   "effect": "speed_boost: +1.5",
   "duration_minutes": 30,
   "remaining_quantity": 2
 }
+```
 
-🧪 TESTS IMPLEMENTADOS:
+## 🧪 Tests
 
-✅ test_list_tournaments_success - Lista torneos correctamente
-✅ test_list_tournaments_with_filters - Filtra por juego específico
-✅ test_create_player_success - Crea jugador con coins iniciales
-✅ test_create_player_duplicate_username_fails - Previene usernames duplicados
-✅ test_create_player_invalid_email_fails - Valida formato de email
-✅ test_apply_power_up_success - Aplica power-up exitosamente
-✅ test_apply_power_up_insufficient_inventory_fails - Maneja inventario vacío
+Los tests están integrados en el archivo `RetroArcade_Hub.py` usando pytest. Para ejecutarlos:
 
-🏗️ ARQUITECTURA DEL PROYECTO:
+```bash
+pytest RetroArcade_Hub.py -v
+```
 
-retroarcade_hub/
-├── main.py                 # API principal con FastAPI
-├── models/
-│   ├── __init__.py
-│   ├── player.py          # Modelo de jugador
-│   ├── tournament.py      # Modelo de torneo  
-│   └── power_up.py        # Modelo de power-ups
-├── schemas/
-│   ├── __init__.py
-│   ├── player.py          # DTOs de jugador
-│   ├── tournament.py      # DTOs de torneo
-│   └── power_up.py        # DTOs de power-ups
-├── services/
-│   ├── __init__.py
-│   ├── player_service.py  # Lógica de negocio jugadores
-│   ├── tournament_service.py # Lógica de negocio torneos
-│   └── power_up_service.py   # Lógica de negocio power-ups
-├── tests/
-│   ├── __init__.py
-│   ├── test_players.py    # Tests de jugadores
-│   ├── test_tournaments.py # Tests de torneos
-│   └── test_power_ups.py   # Tests de power-ups
-├── database.py            # Configuración de BD
-├── requirements.txt       # Dependencias
-├── docker-compose.yml     # Contenedores
-└── README.md             # Documentación
+Tests implementados:
 
-🚀 DESPLIEGUE CON DOCKER:
+- ✅ test_list_tournaments_success - Lista torneos correctamente
+- ✅ test_list_tournaments_with_filters - Filtra por juego específico
+- ✅ test_create_player_success - Crea jugador con coins iniciales
+- ✅ test_create_player_duplicate_username_fails - Previene usernames duplicados
+- ✅ test_create_player_invalid_email_fails - Valida formato de email
+- ✅ test_apply_power_up_success - Aplica power-up exitosamente
+- ✅ test_apply_power_up_insufficient_inventory_fails - Maneja inventario vacío
 
-# docker-compose.yml
-version: '3.8'
-services:
-  api:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/retroarcade
-    depends_on:
-      - db
-  
-  db:
-    image: postgres:13
-    environment:
-      - POSTGRES_DB=retroarcade
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+## 🏗️ Estructura del proyecto
 
-volumes:
-  postgres_data:
+```
+RetroArcade_Hub/
+├── RetroArcade_Hub.py    # Archivo principal con API y tests
+├── README.md             # Documentación
+└── .gitignore            # Archivos ignorados por git
+```
 
-🔧 CONFIGURACIÓN DE PRODUCCIÓN:
+## 🔧 Tecnologías utilizadas
 
-# requirements.txt
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
-pytest==7.4.3
-pytest-asyncio==0.21.1
-alembic==1.12.1
-redis==5.0.1
-celery==5.3.4
+- **FastAPI**: Framework web de alto rendimiento
+- **SQLAlchemy**: ORM para interacción con base de datos
+- **SQLite**: Base de datos para desarrollo
+- **Pydantic**: Validación de datos y serialización
+- **Pytest**: Framework de testing
 
-# .env (ejemplo)
-DATABASE_URL=postgresql://user:password@localhost:5432/retroarcade
-SECRET_KEY=your-super-secret-jwt-key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REDIS_URL=redis://localhost:6379/0
+## 🛡️ Seguridad implementada
 
-🛡️ SEGURIDAD IMPLEMENTADA:
-
-1. **Autenticación JWT**: Tokens seguros para API
+1. **Autenticación JWT**: Tokens seguros para API (simulada)
 2. **Validación de entrada**: Pydantic schemas con validaciones
 3. **Sanitización SQL**: SQLAlchemy ORM previene inyección
-4. **Rate limiting**: Control de frecuencia de requests
-5. **CORS**: Configuración para frontend seguro
-6. **Logging**: Registro de todas las operaciones críticas
+4. **Manejo de errores**: Respuestas HTTP apropiadas
 
-📈 MÉTRICAS Y MONITOREO:
+## 🚀 Casos de uso implementados
 
-- Tiempo de respuesta promedio: <200ms
-- Capacidad: 10,000 usuarios concurrent
-- Disponibilidad objetivo: 99.9%
-- Métricas expuestas en /metrics (Prometheus)
-- Logs estructurados en formato JSON
-- Health check en /health
+1. **Listar torneos disponibles** con filtros por juego y estado
+2. **Crear perfil de jugador** con validaciones de datos
+3. **Aplicar power-ups** en torneos activos con efectos temporales
 
-🎮 FUNCIONALIDADES AVANZADAS PLANIFICADAS:
+## 📈 Funcionalidades planificadas
 
 1. **Sistema de NFTs**: Coleccionables únicos de personajes retro
 2. **Matchmaking inteligente**: Algoritmo de emparejamiento por skill
 3. **Streaming en vivo**: Integración con Twitch para torneos
 4. **Chat en tiempo real**: WebSocket para comunicación
 5. **Marketplace**: Compra/venta de power-ups entre jugadores
-6. **Clanes y guilds**: Equipos competitivos con rankings
-7. **Logros y badges**: Sistema de reconocimientos gamificado
-8. **API de estadísticas**: Analytics avanzados de rendimiento
 
-🌐 ENDPOINTS ADICIONALES (ROADMAP):
+## 🤝 Contribuir
 
-- POST /api/v1/auth/login - Autenticación JWT
-- POST /api/v1/auth/register - Registro con verificación email
-- GET /api/v1/leaderboards - Rankings globales y por juego  
-- POST /api/v1/tournaments/{id}/join - Inscripción a torneo
-- DELETE /api/v1/tournaments/{id}/leave - Abandonar torneo
-- GET /api/v1/players/{id}/stats - Estadísticas detalladas
-- POST /api/v1/marketplace/buy - Comprar power-ups
-- POST /api/v1/marketplace/sell - Vender items
-- GET /api/v1/achievements - Logros disponibles
-- POST /api/v1/clans - Crear clan
-- PUT /api/v1/clans/{id}/join - Unirse a clan
+1. Haz un fork del proyecto
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/amazing-feature`)
+3. Haz commit de tus cambios (`git commit -m 'Add some amazing feature'`)
+4. Push a la rama (`git push origin feature/amazing-feature`)
+5. Abre un Pull Request
 
-Esta implementación cumple completamente con los requisitos pedidos:
-✅ TDD con tests escritos primero
-✅ 3 casos de uso implementados con funcionalidades completas
-✅ API REST con documentación Swagger automática  
-✅ Validaciones y manejo de errores robusto
-✅ Arquitectura escalable con patrones de diseño
-✅ Base de datos relacional con migraciones
-✅ Autenticación y autorización (simulada)
-✅ Código listo para producción con Docker
+## 📄 Licencia
 
-¡La API está lista para ejecutarse y ser probada! 🚀
+Este proyecto está bajo la Licencia MIT - ver el archivo LICENSE para más detalles.
