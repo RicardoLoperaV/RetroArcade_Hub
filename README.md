@@ -12,10 +12,11 @@ API gamificada para torneos de videojuegos retro con sistema de power-ups y perf
 - Python 3.8+
 - Dependencias:
   - fastapi
-  - uvicorn
+  - uvicorn[standard]
   - sqlalchemy
-  - pytest
+  - pydantic
   - python-multipart
+  - pytest
 
 ## 💻 Instalación
 
@@ -36,7 +37,7 @@ API gamificada para torneos de videojuegos retro con sistema de power-ups y perf
 
 3. Instalar dependencias:
    ```bash
-   pip install fastapi uvicorn sqlalchemy pytest python-multipart
+   pip install -r requirements.txt
    ```
 
 ## 🚀 Ejecución
@@ -44,18 +45,45 @@ API gamificada para torneos de videojuegos retro con sistema de power-ups y perf
 Para iniciar el servidor:
 
 ```bash
-python RetroArcade_Hub.py
+python run.py
 ```
 
 O alternativamente:
 
 ```bash
-uvicorn RetroArcade_Hub:app --reload
+uvicorn retroarcade_hub.app.main:app --reload
 ```
 
 La API estará disponible en: http://localhost:8000
 
 Documentación Swagger UI: http://localhost:8000/docs
+
+## 🏗️ Estructura del proyecto
+
+```
+RetroArcade_Hub/
+├── retroarcade_hub/
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py           # Punto de entrada de la aplicación
+│   │   ├── config.py         # Configuración de la aplicación
+│   │   ├── db.py             # Configuración de la base de datos
+│   │   ├── models.py         # Modelos SQLAlchemy
+│   │   ├── schemas.py        # Esquemas Pydantic
+│   │   └── routers/
+│   │       ├── __init__.py
+│   │       ├── auth.py       # Autenticación
+│   │       ├── players.py    # Endpoints de jugadores
+│   │       ├── tournaments.py # Endpoints de torneos
+│   │       └── power_ups.py  # Endpoints de power-ups
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   └── test_retroarcade.py # Tests de la API
+│   └── __init__.py
+├── run.py                    # Script para ejecutar la aplicación
+├── requirements.txt          # Dependencias del proyecto
+└── README.md                 # Documentación
+```
 
 ## 🎮 Ejemplos de uso
 
@@ -108,56 +136,12 @@ curl "http://localhost:8000/api/v1/players/1/inventory" \
 curl "http://localhost:8000/api/v1/power-ups"
 ```
 
-## 📊 Respuestas de ejemplo
-
-### Jugador creado:
-```json
-{
-  "id": 1,
-  "username": "retromaster2025",
-  "email": "master@retroarcade.com",
-  "avatar_url": "https://retro.com/avatars/master.png",
-  "coins": 1000,
-  "level": 1,
-  "experience_points": 0,
-  "created_at": "2025-07-21T10:30:00",
-  "is_active": true
-}
-```
-
-### Torneo disponible:
-```json
-{
-  "id": 1,
-  "name": "Pac-Man Championship 2025",
-  "game_title": "Pac-Man",
-  "description": "Torneo clásico del come-cocos más famoso",
-  "entry_fee": 50,
-  "prize_pool": 5000,
-  "max_participants": 32,
-  "current_participants": 8,
-  "start_date": "2025-07-22T10:00:00",
-  "end_date": "2025-07-24T18:00:00",
-  "status": "upcoming"
-}
-```
-
-### Power-up aplicado:
-```json
-{
-  "message": "Power-up 'Speed Boost' applied successfully",
-  "effect": "speed_boost: +1.5",
-  "duration_minutes": 30,
-  "remaining_quantity": 2
-}
-```
-
 ## 🧪 Tests
 
-Los tests están integrados en el archivo `RetroArcade_Hub.py` usando pytest. Para ejecutarlos:
+Para ejecutar los tests:
 
 ```bash
-pytest RetroArcade_Hub.py -v
+pytest -v retroarcade_hub/tests/
 ```
 
 Tests implementados:
@@ -169,15 +153,6 @@ Tests implementados:
 - ✅ test_create_player_invalid_email_fails - Valida formato de email
 - ✅ test_apply_power_up_success - Aplica power-up exitosamente
 - ✅ test_apply_power_up_insufficient_inventory_fails - Maneja inventario vacío
-
-## 🏗️ Estructura del proyecto
-
-```
-RetroArcade_Hub/
-├── RetroArcade_Hub.py    # Archivo principal con API y tests
-├── README.md             # Documentación
-└── .gitignore            # Archivos ignorados por git
-```
 
 ## 🔧 Tecnologías utilizadas
 
