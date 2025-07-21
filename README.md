@@ -5,7 +5,8 @@
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0.23-orange.svg)
 ![Status](https://img.shields.io/badge/Status-Development-yellow.svg)
 
-API gamificada para torneos de videojuegos retro con sistema de power-ups y perfiles de jugadores.
+RetroArcade Hub API es un backend RESTful construido en Python 3.8+ con FastAPI 0.104.1 y SQLAlchemy 2.0.23 sobre SQLite, diseñado para recrear la experiencia de un centro de juegos arcade clásico en la web. Ofrece gestión completa de perfiles de jugadores (niveles, estadísticas y validaciones Pydantic), organización de torneos de títulos retro, un sistema de power‑ups y economía interna con monedas virtuales. Incorpora autenticación JWT ligera, documentación automática vía Swagger/OpenAPI y una suite de pruebas con pytest para asegurar calidad y fiabilidad. Con esta plataforma, desarrolladores y entusiastas disponen de un back‑end modular, de rápida implantación y altamente extensible, que resuelve la necesidad de prototipar y desplegar mecánicas de gamificación desde el registro de usuarios y resultados hasta la asignación de recompensas, facilitando la integración con front‑ends interactivos y la expansión ágil con nuevos juegos o funcionalidades.
+
 
 ## 📋 Requisitos
 
